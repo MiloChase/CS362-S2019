@@ -711,6 +711,33 @@ int adventurerFunc(int card, int choice1, int choice2, int choice3, struct gameS
     }
     return 0;
 }
+// council_room refactor and pulled from cardEffect
+int council_roomFunc(int card, int choice1, int choice2, int choice3, struct gameState *state, int handPos, int *bonus, int currentPlayer){
+  //+4 Cards
+  int i;
+  for (i = 0; i < 4; i++)
+{
+drawCard(currentPlayer, state);
+}
+
+  //+1 Buy
+  state->numBuys++;
+
+  //Each other player draws a card
+  for (i = 0; i < state->numPlayers; i = i+2) //added bug increases i by 2 not 1 so it will skip some players when choosing who gets to draw.
+{
+if ( i != currentPlayer )
+  {
+    drawCard(i, state);
+  }
+}
+
+  //put played card in played card pile
+  discardCard(handPos, currentPlayer, state, 0);
+
+  return 0;
+
+}
 
 int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState *state, int handPos, int *bonus)
 {
@@ -737,28 +764,7 @@ int cardEffect(int card, int choice1, int choice2, int choice3, struct gameState
       return adventurerFunc(card, choice1, choice2, choice3, state, handPos, bonus, currentPlayer, drawntreasure);
 
     case council_room:
-      //+4 Cards
-      for (i = 0; i < 4; i++)
-	{
-	  drawCard(currentPlayer, state);
-	}
-
-      //+1 Buy
-      state->numBuys++;
-
-      //Each other player draws a card
-      for (i = 0; i < state->numPlayers; i++)
-	{
-	  if ( i != currentPlayer )
-	    {
-	      drawCard(i, state);
-	    }
-	}
-
-      //put played card in played card pile
-      discardCard(handPos, currentPlayer, state, 0);
-
-      return 0;
+    return council_roomFunc(card, choice1, choice2, choice3, state, handPos, bonus, currentPlayer);
 
     case feast:
       //gain card with cost up to 5
