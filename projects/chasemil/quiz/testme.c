@@ -15,7 +15,7 @@ char *inputString()//randoms 5 lowercase letters from 101 'e' to 116 't' with a 
     char rs[6];
     int i;
     for(i = 0; i < 5; i++){
-      rs[i] = rand() % 15 + 101;
+      rs[i] = rand() % 16 + 101;
     }
     rs[5] = '\0';
     return rs;
