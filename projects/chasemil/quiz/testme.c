@@ -3,16 +3,22 @@
 #include<stdlib.h>
 #include<time.h>
 
-char inputChar()
+char inputChar() //makes a random character between 32 ' ' and 126 '~' with a range of 94
 {
-    // TODO: rewrite this function
-    return ' ';
+  char rc = rand() % 94 + 32;
+//  printf('rc = %c\n',rc);
+  return rc;
 }
 
-char *inputString()
+char *inputString()//randoms 5 lowercase letters from 101 'e' to 116 't' with a range of 15, it closes the array with a '\0' in the 6th slot
 {
-    // TODO: rewrite this function
-    return "";
+    char rs[6];
+    int i;
+    for(i = 0; i < 5; i++){
+      rs[i] = rand() % 15 + 101;
+    }
+    rs[5] = '\0';
+    return rs;
 }
 
 void testme()
