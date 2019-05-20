@@ -8,32 +8,28 @@
 #define DEBUG 0
 #define NOISY_TEST 1
 
+int testSmithy(int p, struct gameState* post){
 
-int testAdventurer(int p, struct gameState* post){
-
-
-  post.hand[p][1]= adventurer;
+  post.hand[p][1]= smithy;
   int* bonus;
-  int choice1, choice2, choice3, drawntreasure;
-  drawntreasure = 0;
+  int choice1, choice2, choice3;
   updateCoins(p, post, 0);
   struct gameState pre;
   memcpy (&pre, post, sizeof(struct gameState));
 
 
-  cardEffect(adventurer, choice1, choice2, choice3, post, 1, bonus, p, drawntreasure );
+  cardEffect(smithy, choice1, choice2, choice3, post, 1, bonus, p);
   updateCoins(p,post,0);
   assert(memcmp(&pre, post, sizeof(struct gameState)) != 0);
 
   assert(post->coins > pre->coins);
-  assert(post->actions > pre->actions);
-  assert(post.hand[p][1] != adventurer);
+  assert(post->actions == pre->actions - 1);
+  assert(post.handCount[p] == pre.handCount[p]+2);
+
 return 0;
 }
 
-
 int main(){
-
   int i, n, r, p, deckCount, discardCount, handCount;
 
   int k[10] = {adventurer, council_room, feast, gardens, mine,
