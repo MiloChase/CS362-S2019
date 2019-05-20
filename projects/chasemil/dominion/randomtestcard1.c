@@ -14,20 +14,21 @@ int testAdventurer(int p, struct gameState* post){
 
   post.hand[p][1]= adventurer;
   int* bonus;
-  int choice1, choice2, choice3, drawntreasure;
-  drawntreasure = 0;
+  int choice1, choice2, choice3;
   updateCoins(p, post, 0);
   struct gameState pre;
+  post->whoseTurn = p;
   memcpy (&pre, post, sizeof(struct gameState));
 
 
-  cardEffect(adventurer, choice1, choice2, choice3, post, 1, bonus, p, drawntreasure );
+  cardEffect(adventurer, choice1, choice2, choice3, &post, 1, bonus);
   updateCoins(p,post,0);
   assert(memcmp(&pre, post, sizeof(struct gameState)) != 0);
 
   assert(post->coins > pre->coins);
-  assert(post->actions > pre->actions);
+  assert(post->actions == pre->actions - 1);
   assert(post.hand[p][1] != adventurer);
+  assert(post.handCount[p] == pre.handCount[p] + 1);
 return 0;
 }
 
@@ -54,7 +55,7 @@ int main(){
     G.deckCount[p] = floor(Random() * MAX_DECK);
     G.discardCount[p] = floor(Random() * MAX_DECK);
     G.handCount[p] = floor(Random() * MAX_HAND);
-    checkDrawCard(p, &G);
+      testAdventurer(p, &G);
   }
 
 return 0;
